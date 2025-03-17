@@ -3,7 +3,7 @@ import { useHead } from "@unhead/vue";
 
 useHead({
   bodyAttrs: {
-    class: "bg-zinc-950 text-slate-50",
+    class: "bg-zinc-800 text-slate-50",
   },
 });
 </script>
