@@ -1,3 +1,12 @@
+export type Regen = {
+  value: number;
+  condition: {
+    stat: string;
+    operation: "greater" | "less";
+    value: number;
+  };
+};
+
 export type Stat = {
   name: string;
   description: string;
@@ -7,6 +16,7 @@ export type Stat = {
     value: number;
     description: string;
   }[];
+  regens: Regen[];
 };
 
 export type Entity = {

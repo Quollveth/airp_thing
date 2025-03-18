@@ -1,6 +1,6 @@
 <template>
   <input
-    class="border border-zinc-600 bg-zinc-700 text-white p-2 rounded-md w-full focus:ring-zinc-500 focus:ring-2 focus:outline-none"
+    class="border border-zinc-600 bg-zinc-700 text-white p-2 rounded-md focus:ring-zinc-500 focus:ring-2 focus:outline-none"
   />
 </template>
 

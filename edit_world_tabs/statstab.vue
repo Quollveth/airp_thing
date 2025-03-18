@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import type { Stat } from "@/stores/types";
 import StyledInput from "@/components/styled/input.vue";
-
 import Collapsable from "@/components/collapsable.vue";
-
 import { useAppStore } from "@/stores/app";
 
 const store = useAppStore();
 
 const stats = ref<Stat[]>([]);
+
+onMounted(() => {
+  stats.value = store.worldOpts.stats;
+});
+
 const addNew = () => {
   stats.value.push({
     name: "",
@@ -16,6 +19,7 @@ const addNew = () => {
     min: 0,
     max: 0,
     thresholds: [],
+    regens: [],
   });
 };
 const newThresh = (index: number) => {
@@ -23,6 +27,31 @@ const newThresh = (index: number) => {
     value: 0,
     description: "",
   });
+};
+const newRegen = (index: number) => {
+  stats.value[index].regens.push({
+    value: 0,
+    condition: {
+      stat: "Always",
+      operation: "greater",
+      value: 0,
+    },
+  });
+};
+
+const removeStat = (index: number) => {
+  stats.value.splice(index, 1);
+  store.patchStat(stats.value[index].name, stats.value[index]);
+};
+
+const removeTresh = (statIndex: number, thIndex: number) => {
+  stats.value[statIndex].thresholds.splice(thIndex, 1);
+  store.patchStat(stats.value[statIndex].name, stats.value[statIndex]);
+};
+
+const removeRegen = (statIndex: number, regIndex: number) => {
+  stats.value[statIndex].regens.splice(regIndex, 1);
+  store.patchStat(stats.value[statIndex].name, stats.value[statIndex]);
 };
 
 const _stinputs = {
@@ -69,6 +98,38 @@ const EditThresh = (
 
   store.patchStat(stats.value[statIndex].name, stats.value[statIndex]);
 };
+
+const EditRegen = {
+  value: (e: Event, statIndex: number, regIndex: number) => {
+    const value = (e.target as HTMLInputElement).value as string;
+
+    stats.value[statIndex].regens[regIndex].value = Number(value);
+    store.patchStat(stats.value[statIndex].name, stats.value[statIndex]);
+  },
+
+  condVal: (e: Event, statIndex: number, regIndex: number) => {
+    const value = (e.target as HTMLInputElement).value as string;
+
+    stats.value[statIndex].regens[regIndex].condition.value = Number(value);
+    store.patchStat(stats.value[statIndex].name, stats.value[statIndex]);
+  },
+
+  condStat: (e: Event, statIndex: number, regIndex: number) => {
+    const value = (e.target as HTMLSelectElement).value as string;
+
+    stats.value[statIndex].regens[regIndex].condition.stat = value;
+    store.patchStat(stats.value[statIndex].name, stats.value[statIndex]);
+  },
+
+  condition: (e: Event, statIndex: number, regIndex: number) => {
+    const value = (e.target as HTMLSelectElement).value as string;
+
+    stats.value[statIndex].regens[regIndex].condition.operation = value as
+      | "greater"
+      | "less";
+    store.patchStat(stats.value[statIndex].name, stats.value[statIndex]);
+  },
+} as const;
 </script>
 
 <template>
@@ -111,7 +172,14 @@ const EditThresh = (
         :label="item.name"
         class="mb-4"
       >
-        <div class="flex flex-col p-4">
+        <div class="flex flex-col p-4 gap-2">
+          <button
+            @click="() => removeStat(index)"
+            class="self-end cursor-pointer"
+          >
+            <img src="@/assets/trash.svg" />
+          </button>
+
           <label :for="'statName' + index" class="text-gray-300 font-semibold"
             >Name</label
           >
@@ -141,6 +209,7 @@ const EditThresh = (
               >
               <StyledInput
                 type="number"
+                class="w-full"
                 :id="'statMin' + index"
                 v-model.number="item.min"
                 @input="(e: Event) => EditStat(e, index, 'min')"
@@ -154,6 +223,7 @@ const EditThresh = (
               >
               <StyledInput
                 type="number"
+                class="w-full"
                 :id="'statMax' + index"
                 v-model.number="item.max"
                 @input="(e: Event) => EditStat(e, index, 'max')"
@@ -190,22 +260,104 @@ const EditThresh = (
                   </svg>
                 </button>
               </div>
-              <div
-                v-for="(th, th_index) in item.thresholds"
-                class="grid grid-cols-2 gap-4"
-              >
+              <div v-for="(th, th_index) in item.thresholds" class="flex gap-4">
+                <div class="flex gap-4">
+                  <StyledInput
+                    type="number"
+                    v-model.number="th.value"
+                    @input="
+                      (e: Event) => EditThresh(e, index, th_index, 'value')
+                    "
+                  />
+                  <StyledInput
+                    type="text"
+                    v-model="th.description"
+                    @input="
+                      (e: Event) =>
+                        EditThresh(e, index, th_index, 'description')
+                    "
+                  />
+                </div>
+                <button
+                  @click="() => removeTresh(index, th_index)"
+                  class="self-end cursor-pointer"
+                >
+                  <img src="@/assets/trash.svg" />
+                </button>
+              </div>
+            </div>
+          </Collapsable>
+
+          <Collapsable label="Regens" class="mt-4">
+            <div class="flex flex-col gap-4">
+              <div class="self-end">
+                <button
+                  @click="() => newRegen(index)"
+                  class="p-2 rounded-full border border-zinc-700"
+                >
+                  <svg
+                    width="24px"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 6V18"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M6 12H18"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div v-for="(reg, reg_index) in item.regens" class="flex gap-4">
                 <StyledInput
                   type="number"
-                  v-model.number="th.value"
-                  @input="(e: Event) => EditThresh(e, index, th_index, 'value')"
+                  class="w-20"
+                  @input="(e: Event) => EditRegen.value(e, index, reg_index)"
                 />
-                <StyledInput
-                  type="text"
-                  v-model="th.description"
-                  @input="
-                    (e: Event) => EditThresh(e, index, th_index, 'description')
-                  "
-                />
+                <p class="pt-2">when</p>
+                <div class="flex gap-2 flex-grow w-full items-center">
+                  <select
+                    name="stat"
+                    @change="
+                      (e: Event) => EditRegen.condStat(e, index, reg_index)
+                    "
+                  >
+                    <option value="always">Always</option>
+                    <option v-for="st in stats" :value="st.name">
+                      {{ st.name }}
+                    </option>
+                  </select>
+                  <select
+                    @change="
+                      (e: Event) => EditRegen.condition(e, index, reg_index)
+                    "
+                  >
+                    <option value="greater">Greater Than</option>
+                    <option value="less">Less Than</option>
+                  </select>
+                  <StyledInput
+                    class="w-20"
+                    type="number"
+                    @input="
+                      (e: Event) => EditRegen.condVal(e, index, reg_index)
+                    "
+                  />
+                  <button
+                    @click="() => removeRegen(index, reg_index)"
+                    class="self-end cursor-pointer"
+                  >
+                    <img src="@/assets/trash.svg" />
+                  </button>
+                </div>
               </div>
             </div>
           </Collapsable>
