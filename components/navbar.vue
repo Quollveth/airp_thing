@@ -13,7 +13,7 @@ const currentPage = ref<number>(0);
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col items-center p-6">
+  <div class="min-h-screen flex flex-col items-center p-1">
     <div class="flex space-x-4 mb-6">
       <button
         v-for="(page, index) in pages"

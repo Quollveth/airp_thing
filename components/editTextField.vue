@@ -7,6 +7,7 @@ interface Props {
   changeHandler: (arg0: Event) => void;
   initialValue?: string;
   minRows?: number;
+  fieldId?: string;
 }
 
 defineProps<Props>();
@@ -19,13 +20,13 @@ defineProps<Props>();
   >
     <div class="flex">
       <Hint :text="hintText" />
-      <label for="worldset" class="block text-lg font-semibold mb-2">{{
+      <label :for="fieldId" class="block text-lg font-semibold mb-2">{{
         label
       }}</label>
     </div>
     <textarea
       :value="initialValue"
-      id="worldset"
+      :id="fieldId"
       class="w-full p-3 rounded-lg border border-zinc-700 focus:ring-2 focus:ring-zinc-500 focus:outline-none text-white resize-none"
       :rows="minRows ?? 4"
       @change="changeHandler"

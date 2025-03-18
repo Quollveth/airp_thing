@@ -20,6 +20,11 @@ export default {
     plugins: [tailwindcss()],
   },
 
+  server: {
+    host: "0.0.0.0",
+    port: "3000",
+  },
+
   modules: ["@pinia/nuxt"],
   css: ["@/assets/css/tailwind.css"],
   components: true,
@@ -35,4 +40,3 @@ export default {
 
   compatibilityDate: "2025-03-16",
 };
-

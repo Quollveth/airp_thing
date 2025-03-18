@@ -9,7 +9,7 @@ defineProps<Props>();
   <div id="popover__wrapper">
     <a class="cursor-pointer">
       <h2
-        class="px-2 mx-1 rounded-full border border-zinc-700"
+        class="px-2 mx-1 rounded-full border border-zinc-700 text-zinc-600"
         id="popover__title"
       >
         ?
