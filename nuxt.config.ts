@@ -1,3 +1,5 @@
+import tailwindcss from "@tailwindcss/vite";
+
 export default {
   target: "static",
 
@@ -14,7 +16,11 @@ export default {
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
 
-  modules: ["@nuxtjs/tailwindcss"],
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
+  modules: ["@pinia/nuxt"],
   css: ["@/assets/css/tailwind.css"],
   components: true,
 
@@ -29,3 +35,4 @@ export default {
 
   compatibilityDate: "2025-03-16",
 };
+
