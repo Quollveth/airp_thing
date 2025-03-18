@@ -1,13 +1,15 @@
-import type { World, Stat, Entity } from "./types";
+import type { World } from "./types";
 
 export const useAppStore = defineStore("appStore", {
   state: () => ({
-    world: {
+    worldOpts: {
       stats: [],
       entities: [],
       player: "",
       world: "",
+      location: "",
     } as World,
   }),
+
   actions: {},
 });

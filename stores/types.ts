@@ -20,4 +20,5 @@ export type World = {
   entities: Entity[];
   player: string;
   world: string;
+  location: string;
 };
