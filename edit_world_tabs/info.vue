@@ -5,10 +5,12 @@ import { useAppStore } from "@/stores/app";
 const store = useAppStore();
 
 const desc = ref("");
+const title = ref("");
 const cw = ref<string[]>([]);
 
 onMounted(() => {
   desc.value = store.worldOpts.description;
+  title.value = store.worldOpts.title;
   cw.value = store.worldOpts.CW;
 });
 
@@ -16,6 +18,12 @@ const descHandler = (e: Event) => {
   desc.value = (e.target as HTMLTextAreaElement).value;
   store.patch({ description: desc.value });
 };
+
+const titleHandler = (e: Event) => {
+  title.value = (e.target as HTMLTextAreaElement).value;
+  store.patch({ title: title.value });
+};
+
 const cwHandler = (e: Event) => {
   const value = (e.target as HTMLTextAreaElement).value;
   const asList = value.split(",");
@@ -27,6 +35,13 @@ const cwHandler = (e: Event) => {
 <template>
   <div class="text-white flex flex-col items-center">
     <h1 class="text-3xl font-bold mb-6">World Settings</h1>
+    <TextEditField
+      label="Title"
+      :minRows="1"
+      noHint
+      :changeHandler="titleHandler"
+      :initialValue="title"
+    />
     <TextEditField
       label="Description"
       :minRows="2"

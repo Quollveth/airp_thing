@@ -9,14 +9,32 @@ export const useAppStore = defineStore("appStore", {
       player: "",
       world: "",
       location: "",
+      title: "",
       description: "",
       CW: [],
     } as World,
+
+    worldEmpty: true,
   }),
 
   actions: {
+    reset() {
+      this.worldOpts = {
+        stats: [] as Stat[],
+        entities: [] as Entity[],
+        player: "",
+        world: "",
+        location: "",
+        title: "",
+        description: "",
+        CW: [],
+      } as World;
+      this.worldEmpty = true;
+    },
+
     patch(update: Partial<World>) {
       this.worldOpts = { ...this.worldOpts, ...update };
+      this.worldEmpty = false;
     },
 
     validate(toCheck: any) {
@@ -34,6 +52,7 @@ export const useAppStore = defineStore("appStore", {
           ...this.worldOpts.entities[index],
           ...update,
         };
+        this.worldEmpty = false;
       }
     },
 
@@ -44,6 +63,7 @@ export const useAppStore = defineStore("appStore", {
           ...this.worldOpts.stats[index],
           ...update,
         };
+        this.worldEmpty = false;
       }
     },
   },

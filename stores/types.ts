@@ -33,6 +33,7 @@ export type World = {
   player: string;
   world: string;
   location: string;
+  title: string;
   description: string;
   CW: string[];
 };

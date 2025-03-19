@@ -63,6 +63,7 @@ const load = async () => {
     reader.onload = async () => {
       try {
         const jason = JSON.parse(reader.result as string);
+        store.reset();
         store.patch(jason);
 
         render.value = false;
