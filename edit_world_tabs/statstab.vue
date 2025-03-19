@@ -184,7 +184,7 @@ const EditRegen = {
           <StyledInput
             type="text"
             :id="'statName' + index"
-            v-model="item.name"
+            :value="item.name"
             @input="(e: Event) => EditStat(e, index, 'name')"
           />
 
@@ -194,7 +194,7 @@ const EditRegen = {
           <StyledInput
             type="text"
             :id="'statDesc' + index"
-            v-model="item.description"
+            :value="item.description"
             @input="(e: Event) => EditStat(e, index, 'description')"
           />
 
@@ -203,13 +203,14 @@ const EditRegen = {
               <label
                 :for="'statMin' + index"
                 class="text-gray-300 font-semibold"
+                :value="Number(item.max)"
                 >Min</label
               >
               <StyledInput
                 type="number"
                 class="w-full"
                 :id="'statMin' + index"
-                v-model.number="item.min"
+                :value="Number(item.min)"
                 @input="(e: Event) => EditStat(e, index, 'min')"
               />
             </div>
@@ -262,14 +263,14 @@ const EditRegen = {
                 <div class="flex gap-4">
                   <StyledInput
                     type="number"
-                    v-model.number="th.value"
+                    :value="Number(th.value)"
                     @input="
                       (e: Event) => EditThresh(e, index, th_index, 'value')
                     "
                   />
                   <StyledInput
                     type="text"
-                    v-model="th.description"
+                    :value="th.description"
                     @input="
                       (e: Event) =>
                         EditThresh(e, index, th_index, 'description')
@@ -319,12 +320,14 @@ const EditRegen = {
                 <StyledInput
                   type="number"
                   class="w-20"
+                  :value="reg.value"
                   @input="(e: Event) => EditRegen.value(e, index, reg_index)"
                 />
                 <p class="pt-2">when</p>
                 <div class="flex gap-2 flex-grow w-full items-center">
                   <select
                     name="stat"
+                    :value="reg.condition.stat"
                     @change="
                       (e: Event) => EditRegen.condStat(e, index, reg_index)
                     "
@@ -335,6 +338,7 @@ const EditRegen = {
                     </option>
                   </select>
                   <select
+                    :value="reg.condition.operation"
                     @change="
                       (e: Event) => EditRegen.condition(e, index, reg_index)
                     "
@@ -345,6 +349,7 @@ const EditRegen = {
                   <StyledInput
                     class="w-20"
                     type="number"
+                    :value="reg.condition.value"
                     @input="
                       (e: Event) => EditRegen.condVal(e, index, reg_index)
                     "
