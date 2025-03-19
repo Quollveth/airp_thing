@@ -43,12 +43,10 @@ const removeStat = (index: number) => {
   stats.value.splice(index, 1);
   store.patchStat(stats.value[index].name, stats.value[index]);
 };
-
 const removeTresh = (statIndex: number, thIndex: number) => {
   stats.value[statIndex].thresholds.splice(thIndex, 1);
   store.patchStat(stats.value[statIndex].name, stats.value[statIndex]);
 };
-
 const removeRegen = (statIndex: number, regIndex: number) => {
   stats.value[statIndex].regens.splice(regIndex, 1);
   store.patchStat(stats.value[statIndex].name, stats.value[statIndex]);

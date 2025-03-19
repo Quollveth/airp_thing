@@ -1,3 +1,88 @@
+<script setup lang="ts">
+import type { Entity } from "@/stores/types";
+import { useAppStore } from "@/stores/app";
+import TextEditField from "@/components/editTextField.vue";
+import StyledInput from "@/components/styled/input.vue";
+
+const store = useAppStore();
+
+const entities = ref<Entity[]>([]);
+
+const addNew = () => {
+  entities.value.push({
+    name: "",
+    description: "",
+    tags: [],
+  });
+};
+const removeEntity = (index: number) => {
+  entities.value.splice(index, 1);
+};
+</script>
+
 <template>
-  <h1>entities</h1>
+  <div class="flex flex-col items-center">
+    <h1 class="text-4xl font-extrabold text-gray-200 mb-6">Entities</h1>
+    <TextEditField
+      label="Player Description"
+      hintText="Short description of the player's appearance"
+    />
+
+    <h1 class="text-2xl font-bold text-gray-200 mb-6">NPCs</h1>
+    <div class="flex items-center self-end text-zinc-400 space-x-2 mb-4">
+      <h3 class="text-lg">Add</h3>
+      <button
+        @click="addNew"
+        class="p-1 rounded-full border border-zinc-700 shadow-lg"
+      >
+        <svg
+          width="24px"
+          height="24px"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 6V18"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M6 12H18"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <Collapsable
+      v-for="(item, index) in entities"
+      :key="index"
+      :label="item.name"
+      class="mb-4"
+    >
+      <div class="flex flex-col p-4 gap-2">
+        <button
+          @click="() => removeEntity(index)"
+          class="self-end cursor-pointer"
+        >
+          <img src="@/assets/trash.svg" />
+        </button>
+
+        <TextEditField label="Name" noHint minRows="1" />
+        <TextEditField
+          label="Description"
+          hintText="Short description of this npc for the model"
+        />
+        <TextEditField
+          label="Tags (comma separated)"
+          hintText="Additional information about this npc for the model"
+          minRows="1"
+        />
+      </div>
+    </Collapsable>
+  </div>
 </template>

@@ -23,6 +23,9 @@ importers:
       pinia:
         specifier: ^3.0.1
         version: 3.0.1(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
+      sweetalert2:
+        specifier: ^11.17.2
+        version: 11.17.2
       tailwindcss:
         specifier: ^4.0.14
         version: 4.0.14
@@ -2989,6 +2992,9 @@ packages:
     resolution: {integrity: sha512-OoohrmuUlBs8B8o6MB2Aevn+pRIH9zDALSR+6hhqVfa6fRwG/Qw9VUMSMW9VNg2CFc/MTIfabtdOVl9ODIJjpw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
+
+  sweetalert2@11.17.2:
+    resolution: {integrity: sha512-HKxDr1IyV3Lxr3W6sb61qm/p2epFIEdr5EKwteRFHnIg6f8nHFl2kX++DBVz16Mac+fFiU3hMpjq1L6yE2Ge5w==}
 
   system-architecture@0.1.0:
     resolution: {integrity: sha512-ulAk51I9UVUyJgxlv9M6lFot2WP3e7t8Kz9+IS6D4rVba1tR9kON+Ey69f+1R4Q8cd45Lod6a4IcJIxnzGc/zA==}
@@ -6865,6 +6871,8 @@ snapshots:
       css-what: 6.1.0
       csso: 5.0.5
       picocolors: 1.1.1
+
+  sweetalert2@11.17.2: {}
 
   system-architecture@0.1.0: {}
 

@@ -8,18 +8,16 @@ interface Props {
   initialValue?: string;
   minRows?: number;
   fieldId?: string;
+  noHint?: boolean;
 }
 
 defineProps<Props>();
 </script>
 
 <template>
-  <div
-    class="w-full max-w-lg mb-6"
-    :class="minRows == 1 ? 'flex gap-5 items-center' : ''"
-  >
+  <div class="w-full max-w-lg mb-6">
     <div class="flex">
-      <Hint :text="hintText" />
+      <Hint :text="hintText" v-if="!noHint" />
       <label :for="fieldId" class="block text-lg font-semibold mb-2">{{
         label
       }}</label>
