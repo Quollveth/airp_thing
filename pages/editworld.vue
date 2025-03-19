@@ -32,9 +32,38 @@ const save = () => {
   dlAnchor.setAttribute("href", dataStr);
   dlAnchor.setAttribute("download", "airp_save.json");
 
-  document.body.appendChild(dlAnchor);
   dlAnchor.click();
-  dlAnchor.remove();
+};
+
+const load = () => {
+  const fileIn = document.createElement("input") as HTMLInputElement;
+  fileIn.setAttribute("type", "file");
+
+  fileIn.addEventListener("change", (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      try {
+        const jason = JSON.parse(reader.result as string);
+        store.patch(jason);
+      } catch (e) {
+        Swal.fire({
+          title: "Invalid JSON",
+          text: "Your file sucks ass, use a good one next time dumbass.",
+          icon: "error",
+          theme: "dark",
+        });
+      }
+    };
+
+    reader.readAsText(file);
+  });
+
+  fileIn.click();
 };
 </script>
 
@@ -52,6 +81,12 @@ const save = () => {
         @click="save"
       >
         Save
+      </button>
+      <button
+        class="px-4 py-2 rounded-lg transition duration-300 hover:bg-zinc-600 border-2 border-zinc-700"
+        @click="load"
+      >
+        Load
       </button>
     </div>
 

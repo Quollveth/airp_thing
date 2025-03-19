@@ -17,6 +17,12 @@ export const useAppStore = defineStore("appStore", {
       this.worldOpts = { ...this.worldOpts, ...update };
     },
 
+    validate(toCheck: any) {
+      // verify if it's a world, throw if not
+      //TODO: this lmao
+      return;
+    },
+
     patchEntity(entityName: string, update: Partial<Entity>) {
       const index = this.worldOpts.entities.findIndex(
         (e) => e.name === entityName,
