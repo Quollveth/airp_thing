@@ -27,7 +27,7 @@ defineProps<Props>();
       :id="fieldId"
       class="w-full p-3 rounded-lg border border-zinc-700 focus:ring-2 focus:ring-zinc-500 focus:outline-none text-white resize-none"
       :rows="minRows ?? 4"
-      @change="changeHandler"
+      @input="changeHandler"
     ></textarea>
   </div>
 </template>

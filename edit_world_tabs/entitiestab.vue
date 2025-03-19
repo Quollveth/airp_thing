@@ -2,11 +2,16 @@
 import type { Entity } from "@/stores/types";
 import { useAppStore } from "@/stores/app";
 import TextEditField from "@/components/editTextField.vue";
-import StyledInput from "@/components/styled/input.vue";
 
 const store = useAppStore();
 
 const entities = ref<Entity[]>([]);
+const player = ref("");
+
+onMounted(() => {
+  entities.value = store.worldOpts.entities;
+  player.value = store.worldOpts.player;
+});
 
 const addNew = () => {
   entities.value.push({
@@ -18,6 +23,36 @@ const addNew = () => {
 const removeEntity = (index: number) => {
   entities.value.splice(index, 1);
 };
+
+const editPlayer = (e: Event) => {
+  const value = (e.target as HTMLTextAreaElement).value;
+  player.value = value;
+  store.patch({
+    player: value,
+  });
+};
+
+const _entinputs = {
+  name: "string",
+  description: "description",
+  tags: "tags",
+} as const;
+type EntInputs = keyof typeof _entinputs;
+
+const editEntity = (e: Event, index: number, what: EntInputs) => {
+  const value = (e.target as HTMLTextAreaElement).value as string;
+  if (what == "name") {
+    entities.value[index].name = value;
+  }
+  if (what == "description") {
+    entities.value[index].description = value;
+  }
+  if (what == "tags") {
+    const tagsAsList = value.split(",");
+    entities.value[index].tags = [...tagsAsList];
+  }
+  store.patchEntity(entities.value[index].name, entities.value[index]);
+};
 </script>
 
 <template>
@@ -26,6 +61,8 @@ const removeEntity = (index: number) => {
     <TextEditField
       label="Player Description"
       hintText="Short description of the player's appearance"
+      :changeHandler="editPlayer"
+      :initialValue="player"
     />
 
     <h1 class="text-2xl font-bold text-gray-200 mb-6">NPCs</h1>
@@ -72,15 +109,25 @@ const removeEntity = (index: number) => {
           <img src="@/assets/trash.svg" />
         </button>
 
-        <TextEditField label="Name" noHint minRows="1" />
+        <TextEditField
+          label="Name"
+          noHint
+          minRows="1"
+          :changeHandler="(e: Event) => editEntity(e, index, 'name')"
+          :initialValue="item.name"
+        />
         <TextEditField
           label="Description"
           hintText="Short description of this npc for the model"
+          :changeHandler="(e: Event) => editEntity(e, index, 'description')"
+          :initialValue="item.description"
         />
         <TextEditField
           label="Tags (comma separated)"
           hintText="Additional information about this npc for the model"
           minRows="1"
+          :changeHandler="(e: Event) => editEntity(e, index, 'tags')"
+          :initialValue="item.tags.join(',')"
         />
       </div>
     </Collapsable>
