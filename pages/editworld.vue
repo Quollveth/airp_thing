@@ -6,6 +6,10 @@ import worldtab from "@/edit_world_tabs/worldtab.vue";
 import entitiestab from "@/edit_world_tabs/entitiestab.vue";
 import statstab from "@/edit_world_tabs/statstab.vue";
 
+import { useAppStore } from "@/stores/app";
+
+const store = useAppStore();
+
 const goBack = () => {
   Swal.fire({
     title: "Exit the editor?",
@@ -20,7 +24,18 @@ const goBack = () => {
   });
 };
 
-const save = () => {};
+const save = () => {
+  const jason = JSON.stringify(store.worldOpts, null, 2);
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jason);
+  const dlAnchor = document.createElement("a") as HTMLAnchorElement;
+
+  dlAnchor.setAttribute("href", dataStr);
+  dlAnchor.setAttribute("download", "airp_save.json");
+
+  document.body.appendChild(dlAnchor);
+  dlAnchor.click();
+  dlAnchor.remove();
+};
 </script>
 
 <template>
