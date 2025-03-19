@@ -2,7 +2,7 @@
 import Hint from "@/components/hintIcon.vue";
 
 interface Props {
-  hintText: string;
+  hintText?: string;
   label: string;
   changeHandler: (arg0: Event) => void;
   initialValue?: string;
@@ -17,7 +17,7 @@ defineProps<Props>();
 <template>
   <div class="w-full max-w-lg mb-6">
     <div class="flex">
-      <Hint :text="hintText" v-if="!noHint" />
+      <Hint :text="hintText!" v-if="!noHint" />
       <label :for="fieldId" class="block text-lg font-semibold mb-2">{{
         label
       }}</label>

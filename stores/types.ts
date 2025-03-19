@@ -1,8 +1,9 @@
+export type Comparison = "greater" | "less" | "greater_equal" | "less_equal";
 export type Regen = {
   value: number;
   condition: {
     stat: string;
-    operation: "greater" | "less";
+    operation: Comparison;
     value: number;
   };
 };
@@ -12,6 +13,7 @@ export type Stat = {
   description: string;
   min: number;
   max: number;
+  starting: number;
   thresholds: {
     value: number;
     description: string;
@@ -31,4 +33,6 @@ export type World = {
   player: string;
   world: string;
   location: string;
+  description: string;
+  CW: string[];
 };

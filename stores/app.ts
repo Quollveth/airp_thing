@@ -9,6 +9,8 @@ export const useAppStore = defineStore("appStore", {
       player: "",
       world: "",
       location: "",
+      description: "",
+      CW: [],
     } as World,
   }),
 

@@ -5,6 +5,7 @@ import TabNavigation from "@/components/navbar.vue";
 import worldtab from "@/edit_world_tabs/worldtab.vue";
 import entitiestab from "@/edit_world_tabs/entitiestab.vue";
 import statstab from "@/edit_world_tabs/statstab.vue";
+import infoTab from "@/edit_world_tabs/info.vue";
 
 import { useAppStore } from "@/stores/app";
 
@@ -24,18 +25,31 @@ const goBack = () => {
   });
 };
 
-const save = () => {
+const save = async () => {
+  const { value: fileName } = await Swal.fire({
+    title: "Downloading...",
+    inputLabel: "Filename",
+    input: "text",
+    showCancelButton: true,
+    theme: "dark",
+  });
+
+  if (!fileName) {
+    return;
+  }
+
   const jason = JSON.stringify(store.worldOpts, null, 2);
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jason);
   const dlAnchor = document.createElement("a") as HTMLAnchorElement;
 
   dlAnchor.setAttribute("href", dataStr);
-  dlAnchor.setAttribute("download", "airp_save.json");
+  dlAnchor.setAttribute("download", fileName + ".json");
 
   dlAnchor.click();
 };
 
-const load = () => {
+const render = ref(true);
+const load = async () => {
   const fileIn = document.createElement("input") as HTMLInputElement;
   fileIn.setAttribute("type", "file");
 
@@ -46,10 +60,14 @@ const load = () => {
     const file = input.files[0];
     const reader = new FileReader();
 
-    reader.onload = () => {
+    reader.onload = async () => {
       try {
         const jason = JSON.parse(reader.result as string);
         store.patch(jason);
+
+        render.value = false;
+        await nextTick();
+        render.value = true;
       } catch (e) {
         Swal.fire({
           title: "Invalid JSON",
@@ -68,7 +86,7 @@ const load = () => {
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col" v-if="render">
     <div class="flex justify-center gap-5 my-6">
       <button
         class="px-4 py-2 rounded-lg transition duration-300 hover:bg-zinc-600 border-2 border-zinc-700"
@@ -93,6 +111,10 @@ const load = () => {
     <div class="flex flex-grow" />
     <TabNavigation
       :pages="[
+        {
+          label: 'Info',
+          content: infoTab,
+        },
         {
           label: 'World',
           content: worldtab,

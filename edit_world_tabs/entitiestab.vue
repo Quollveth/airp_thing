@@ -112,7 +112,7 @@ const editEntity = (e: Event, index: number, what: EntInputs) => {
         <TextEditField
           label="Name"
           noHint
-          minRows="1"
+          :minRows="1"
           :changeHandler="(e: Event) => editEntity(e, index, 'name')"
           :initialValue="item.name"
         />
@@ -125,7 +125,7 @@ const editEntity = (e: Event, index: number, what: EntInputs) => {
         <TextEditField
           label="Tags (comma separated)"
           hintText="Additional information about this npc for the model"
-          minRows="1"
+          :minRows="1"
           :changeHandler="(e: Event) => editEntity(e, index, 'tags')"
           :initialValue="item.tags.join(',')"
         />

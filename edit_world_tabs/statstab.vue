@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Stat } from "@/stores/types";
+import type { Stat, Comparison } from "@/stores/types";
 import StyledInput from "@/components/styled/input.vue";
 import Collapsable from "@/components/collapsable.vue";
 import { useAppStore } from "@/stores/app";
@@ -18,6 +18,7 @@ const addNew = () => {
     description: "",
     min: 0,
     max: 0,
+    starting: 0,
     thresholds: [],
     regens: [],
   });
@@ -57,6 +58,7 @@ const _stinputs = {
   description: "description",
   min: "min",
   max: "max",
+  starting: "starting",
 } as const;
 type StatInputs = keyof typeof _stinputs;
 
@@ -75,6 +77,8 @@ const EditStat = (e: Event, index: number, stat: StatInputs) => {
     case "max":
       stats.value[index].max = Number(value);
       break;
+    case "starting":
+      stats.value[index].starting = Number(value);
   }
 
   store.patchStat(stats.value[index].name, stats.value[index]);
@@ -122,9 +126,8 @@ const EditRegen = {
   condition: (e: Event, statIndex: number, regIndex: number) => {
     const value = (e.target as HTMLSelectElement).value as string;
 
-    stats.value[statIndex].regens[regIndex].condition.operation = value as
-      | "greater"
-      | "less";
+    stats.value[statIndex].regens[regIndex].condition.operation =
+      value as Comparison;
     store.patchStat(stats.value[statIndex].name, stats.value[statIndex]);
   },
 } as const;
@@ -198,7 +201,7 @@ const EditRegen = {
             @input="(e: Event) => EditStat(e, index, 'description')"
           />
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-3 gap-4">
             <div>
               <label
                 :for="'statMin' + index"
@@ -216,6 +219,20 @@ const EditRegen = {
             </div>
             <div>
               <label
+                :for="'statStart' + index"
+                class="text-gray-300 font-semibold"
+                >Starting</label
+              >
+              <StyledInput
+                type="number"
+                class="w-full"
+                :id="'statStart' + index"
+                :value="item.starting"
+                @input="(e: Event) => EditStat(e, index, 'starting')"
+              />
+            </div>
+            <div>
+              <label
                 :for="'statMax' + index"
                 class="text-gray-300 font-semibold"
                 >Max</label
@@ -224,7 +241,7 @@ const EditRegen = {
                 type="number"
                 class="w-full"
                 :id="'statMax' + index"
-                v-model.number="item.max"
+                :value="item.max"
                 @input="(e: Event) => EditStat(e, index, 'max')"
               />
             </div>
@@ -345,6 +362,8 @@ const EditRegen = {
                   >
                     <option value="greater">Greater Than</option>
                     <option value="less">Less Than</option>
+                    <option value="greater_equal">Greater or Equal</option>
+                    <option value="less_equal">Less or Equal</option>
                   </select>
                   <StyledInput
                     class="w-20"
