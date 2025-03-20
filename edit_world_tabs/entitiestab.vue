@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Entity } from "@/stores/types";
-import { useAppStore } from "@/stores/app";
+import { useWorldStore } from "@/stores/app";
 import TextEditField from "@/components/editTextField.vue";
 
-const store = useAppStore();
+const store = useWorldStore();
 
 const entities = ref<Entity[]>([]);
 const player = ref("");

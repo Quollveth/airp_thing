@@ -7,9 +7,9 @@ import entitiestab from "@/edit_world_tabs/entitiestab.vue";
 import statstab from "@/edit_world_tabs/statstab.vue";
 import infoTab from "@/edit_world_tabs/info.vue";
 
-import { useAppStore } from "@/stores/app";
+import { useWorldStore } from "@/stores/app";
 
-const store = useAppStore();
+const store = useWorldStore();
 
 const goBack = () => {
   Swal.fire({

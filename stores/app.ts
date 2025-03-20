@@ -1,7 +1,7 @@
 import type { World, Stat, Entity, Agent, Endpoint } from "./types";
 import { defineStore } from "pinia";
 
-export const useAppStore = defineStore("appStore", {
+export const useWorldStore = defineStore("worldStore", {
   state: () => ({
     worldOpts: {
       stats: [] as Stat[],
@@ -15,27 +15,6 @@ export const useAppStore = defineStore("appStore", {
     } as World,
 
     worldEmpty: true,
-
-    rpModel: {
-      Endpoint: {
-        modelName: "",
-        endpoint: "",
-        token: "",
-      },
-      SystemPrompts: [],
-    } as Agent,
-
-    logicModel: {
-      Endpoint: {
-        modelName: "",
-        endpoint: "",
-        token: "",
-      },
-      SystemPrompts: [],
-    } as Agent,
-
-    rpUpdated: false,
-    logicUpdated: false,
   }),
 
   actions: {
@@ -81,8 +60,35 @@ export const useAppStore = defineStore("appStore", {
         this.worldEmpty = false;
       }
     },
+  },
+});
 
-    resetModel(which: "logic" | "rp") {
+export const useSettingsStore = defineStore("settingsStore", {
+  state: () => ({
+    rpModel: {
+      Endpoint: {
+        modelName: "",
+        endpoint: "",
+        token: "",
+      },
+      SystemPrompts: [],
+    } as Agent,
+
+    logicModel: {
+      Endpoint: {
+        modelName: "",
+        endpoint: "",
+        token: "",
+      },
+      SystemPrompts: [],
+    } as Agent,
+
+    rpUpdated: false,
+    logicUpdated: false,
+  }),
+
+  actions: {
+    reset(which: "logic" | "rp") {
       const empty = {
         Endpoint: {
           modelName: "",

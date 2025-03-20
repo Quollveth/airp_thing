@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import TextEditField from "@/components/editTextField.vue";
-import { useAppStore } from "@/stores/app";
+import { useWorldStore } from "@/stores/app";
 
-const store = useAppStore();
+const store = useWorldStore();
 
 const world = ref("");
 const location = ref("");

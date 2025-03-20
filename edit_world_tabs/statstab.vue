@@ -2,9 +2,9 @@
 import type { Stat, Comparison } from "@/stores/types";
 import StyledInput from "@/components/styled/input.vue";
 import Collapsable from "@/components/collapsable.vue";
-import { useAppStore } from "@/stores/app";
+import { useWorldStore } from "@/stores/app";
 
-const store = useAppStore();
+const store = useWorldStore();
 
 const stats = ref<Stat[]>([]);
 
