@@ -1,7 +1,12 @@
 import { assertEquals } from "https://deno.land/std/testing/asserts.ts";
 
 import type { World, Stat, Entity } from "../../stores/types.ts";
-import { ReplaceReferences } from "../parser.ts";
+import {
+  ReplaceReferences,
+  formatEntity,
+  formatStatSimple,
+  formatStatFull,
+} from "../parser.ts";
 
 const dataStore: World = {
   title: "Test World",
@@ -70,4 +75,12 @@ performTest({
   text: "world and location",
   template: "the game is set on $[WORLD], in $[LOCATION]",
   expected: `the game is set on ${dataStore.world}, in ${dataStore.location}`,
+});
+
+performTest({
+  text: "npc list",
+  template: `NPCS: The following NPCs are available for the situation and any, or none, of them may be involved.
+		$[ENTITIES]`,
+  expected: `NPCS: The following NPCs are available for the situation and any, or none, of them may be involved.
+		${dataStore.entities.map(formatEntity).join("\n")}`,
 });

@@ -5,7 +5,7 @@
 //import type { World, Stat, Entity } from "@/stores/types";
 import type { World, Stat, Entity } from "../stores/types.ts";
 
-function formatStatSimple(stat: Stat): string {
+export function formatStatSimple(stat: Stat): string {
   const lastThresh =
     stat.thresholds
       .filter((t) => t.value <= stat.starting)
@@ -14,7 +14,7 @@ function formatStatSimple(stat: Stat): string {
   return `${stat.name}: ${stat.starting}/${stat.max} - ${lastThresh}`;
 }
 
-function formatStatFull(stat: Stat): string {
+export function formatStatFull(stat: Stat): string {
   const lastThresh =
     stat.thresholds
       .filter((t) => t.value <= stat.starting)
@@ -23,7 +23,7 @@ function formatStatFull(stat: Stat): string {
   return `${stat.name}: ${stat.description} - min:${stat.min}, max:${stat.max}, current:${stat.starting} - ${lastThresh}`;
 }
 
-function formatEntity(entity: Entity): string {
+export function formatEntity(entity: Entity): string {
   return `${entity.name}: ${entity.description} - ${entity.tags.join(",")}`;
 }
 
@@ -45,5 +45,8 @@ export function ReplaceReferences(
     "$[STATSFULL]": () => dataStore.stats.map(formatStatFull).join("\n"),
   };
 
-  return "";
+  return toReplace.replace(
+    /\$\[[A-Z]+\]/g,
+    (match) => statGetter[match]?.() ?? match,
+  );
 }
