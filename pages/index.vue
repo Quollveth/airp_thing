@@ -12,6 +12,7 @@ const APPNAME = "AIRP Thingmabob";
       <NiceButton text="New Game" :onPress="() => navigateTo('/newgame')" />
       <NiceButton text="Load Game" :onPress="() => navigateTo('/loadgame')" />
       <NiceButton text="Edit World" :onPress="() => navigateTo('/editworld')" />
+      <NiceButton text="Settings" :onPress="() => navigateTo('/settings')" />
     </div>
     <div class="flex flex-grow" />
     <div class="mt-20">

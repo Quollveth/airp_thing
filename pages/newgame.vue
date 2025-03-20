@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Swal from "sweetalert2";
-import { useAppStore } from "@/stores/app";
 import WorldBlock from "@/components/styled/worldBlock.vue";
+import { useAppStore } from "@/stores/app";
 
 const store = useAppStore();
 

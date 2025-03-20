@@ -1,3 +1,8 @@
+//   __      _____  ___ _    ___    _______   _____ ___ ___
+//   \ \    / / _ \| _ \ |  |   \  |_   _\ \ / / _ \ __/ __|
+//    \ \/\/ / (_) |   / |__| |) |   | |  \ V /|  _/ _|\__ \
+//     \_/\_/ \___/|_|_\____|___/    |_|   |_| |_| |___|___/
+
 export type Comparison = "greater" | "less" | "greater_equal" | "less_equal";
 export type Regen = {
   value: number;
@@ -20,7 +25,6 @@ export type Stat = {
   }[];
   regens: Regen[];
 };
-
 export type Entity = {
   name: string;
   description: string;
@@ -36,4 +40,20 @@ export type World = {
   title: string;
   description: string;
   CW: string[];
+};
+
+//      _   ___   _______   _____ ___ ___
+//     /_\ |_ _| |_   _\ \ / / _ \ __/ __|
+//    / _ \ | |    | |  \ V /|  _/ _|\__ \
+//   /_/ \_\___|   |_|   |_| |_| |___|___/
+
+export type Endpoint = {
+  modelName: string;
+  endpoint: string;
+  token: string;
+};
+
+export type Agent = {
+  Endpoint: Endpoint;
+  SystemPrompts: string[];
 };
