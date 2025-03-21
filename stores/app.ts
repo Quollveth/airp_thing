@@ -1,4 +1,5 @@
 import type { World, Stat, Entity, Agent, Endpoint } from "./types";
+import { DefaultModelRP, DefaultModelLogic } from "./defaults";
 import { defineStore } from "pinia";
 
 export const useWorldStore = defineStore("worldStore", {
@@ -65,47 +66,28 @@ export const useWorldStore = defineStore("worldStore", {
 
 export const useSettingsStore = defineStore("settingsStore", {
   state: () => ({
-    rpModel: {
-      Endpoint: {
-        modelName: "",
-        endpoint: "",
-        token: "",
-      },
-      SystemPrompts: [],
-    } as Agent,
-
-    logicModel: {
-      Endpoint: {
-        modelName: "",
-        endpoint: "",
-        token: "",
-      },
-      SystemPrompts: [],
-    } as Agent,
+    logicModel: DefaultModelLogic,
+    rpModel: DefaultModelRP,
 
     rpUpdated: false,
     logicUpdated: false,
+    sameModel: false,
   }),
 
   actions: {
     reset(which: "logic" | "rp") {
-      const empty = {
-        Endpoint: {
-          modelName: "",
-          endpoint: "",
-          token: "",
-        },
-        SystemPrompts: [],
-      } as Agent;
-
       if (which == "logic") {
-        this.logicModel = empty;
+        this.logicModel = DefaultModelLogic;
         this.logicUpdated = false;
       }
       if (which == "rp") {
-        this.rpModel = empty;
+        this.rpModel = DefaultModelRP;
         this.rpUpdated = false;
       }
+    },
+
+    useSameModel(use: boolean) {
+      this.sameModel = use;
     },
 
     patchModel(which: "logic" | "rp", update: Partial<Agent>) {
