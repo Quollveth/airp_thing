@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import StyledInput from "@/components/styled/input.vue";
+import StyledButton from "@/components/styled/button.vue";
 import Hint from "@/components/hintIcon.vue";
 import type { Endpoint } from "@/stores/types";
 
@@ -59,11 +60,23 @@ const copySettings = (ntl: boolean) => {
   }
   rpModel.value = { ...logicModel.value };
 };
+
+const resetSettings = (e: Event) => {
+  store.reset("logic");
+  store.reset("rp");
+
+  sameModel.value = store.sameModel;
+  logicModel.value = { ...store.logicModel.Endpoint };
+  rpModel.value = { ...store.rpModel.Endpoint };
+};
 </script>
 
 <template>
   <div class="text-white flex flex-col items-center">
-    <h1 class="text-3xl font-bold mb-6">Endpoint Settings</h1>
+    <div class="flex gap-2">
+      <h1 class="text-3xl font-bold mb-6">Endpoint Settings</h1>
+      <StyledButton class="h-min" @click="resetSettings">Reset</StyledButton>
+    </div>
     <div class="flex flex-col gap-2 w-full">
       <div class="flex">
         <Hint
@@ -151,13 +164,13 @@ const copySettings = (ntl: boolean) => {
         :value="logicModel!.endpoint"
       />
       <StyledInput
-        @input="(e: Event) => updateSetting(e, true, 'end')"
+        @input="(e: Event) => updateSetting(e, true, 'name')"
         type="text"
         placeholder="Model name"
         :value="logicModel!.modelName"
       />
       <StyledInput
-        @input="(e: Event) => updateSetting(e, true, 'end')"
+        @input="(e: Event) => updateSetting(e, true, 'key')"
         type="text"
         placeholder="API key"
         :value="logicModel!.token"

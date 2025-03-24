@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import StyledButton from "@/components/styled/button.vue";
 type pageTab = {
   label: string;
   content: Component;
@@ -15,15 +16,14 @@ const currentPage = ref<number>(0);
 <template>
   <div class="min-h-screen flex flex-col items-center p-1">
     <div class="flex space-x-4 mb-6">
-      <button
+      <StyledButton
         v-for="(page, index) in pages"
         :key="index"
         @click="currentPage = index"
-        class="px-4 py-2 rounded-lg transition duration-300 hover:bg-zinc-600 border-2 border-zinc-700"
         :class="{ 'bg-zinc-700': currentPage === index }"
       >
         {{ page.label }}
-      </button>
+      </StyledButton>
     </div>
     <div
       class="w-full max-w-3xl p-6 rounded-xl shadow-lg border-2 border-zinc-700"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NiceButton from "@/components/styledButton.vue";
+import StyledButton from "@/components/styled/button.vue";
 import Credits from "@/components/credits.vue";
 
 const APPNAME = "AIRP Thingmabob";
@@ -9,10 +9,18 @@ const APPNAME = "AIRP Thingmabob";
     <div class="flex flex-grow" />
     <h1 class="text-4xl font-bold mb-8">{{ APPNAME }}</h1>
     <div class="space-y-4 flex flex-col">
-      <NiceButton text="New Game" :onPress="() => navigateTo('/newgame')" />
-      <NiceButton text="Load Game" :onPress="() => navigateTo('/loadgame')" />
-      <NiceButton text="Edit World" :onPress="() => navigateTo('/editworld')" />
-      <NiceButton text="Settings" :onPress="() => navigateTo('/settings')" />
+      <StyledButton @click="() => navigateTo('/newgame')"
+        >New Game</StyledButton
+      >
+      <StyledButton @click="() => navigateTo('/loadgame')"
+        >Load Game</StyledButton
+      >
+      <StyledButton @click="() => navigateTo('/editworld')"
+        >Edit World</StyledButton
+      >
+      <StyledButton @click="() => navigateTo('/settings')"
+        >Settings</StyledButton
+      >
     </div>
     <div class="flex flex-grow" />
     <div class="mt-20">
