@@ -8,19 +8,19 @@ import type { World, Stat, Entity } from "../stores/types.ts";
 export function formatStatSimple(stat: Stat): string {
   const lastThresh =
     stat.thresholds
-      .filter((t) => t.value <= stat.starting)
+      .filter((t) => t.value <= stat.current)
       .sort((a, b) => b.value - a.value)[0] || null;
 
-  return `${stat.name}: ${stat.starting}/${stat.max} - ${lastThresh}`;
+  return `${stat.name}: ${stat.current}/${stat.max} - ${lastThresh}`;
 }
 
 export function formatStatFull(stat: Stat): string {
   const lastThresh =
     stat.thresholds
-      .filter((t) => t.value <= stat.starting)
+      .filter((t) => t.value <= stat.current)
       .sort((a, b) => b.value - a.value)[0] || null;
 
-  return `${stat.name}: ${stat.description} - min:${stat.min}, max:${stat.max}, current:${stat.starting} - ${lastThresh}`;
+  return `${stat.name}: ${stat.description} - min:${stat.min}, max:${stat.max}, current:${stat.current} - ${lastThresh}`;
 }
 
 export function formatEntity(entity: Entity): string {

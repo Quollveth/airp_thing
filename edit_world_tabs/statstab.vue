@@ -18,7 +18,7 @@ const addNew = () => {
     description: "",
     min: 0,
     max: 0,
-    starting: 0,
+    current: 0,
     thresholds: [],
     regens: [],
   });
@@ -58,7 +58,7 @@ const _stinputs = {
   description: "description",
   min: "min",
   max: "max",
-  starting: "starting",
+  current: "starting",
 } as const;
 type StatInputs = keyof typeof _stinputs;
 
@@ -77,8 +77,8 @@ const EditStat = (e: Event, index: number, stat: StatInputs) => {
     case "max":
       stats.value[index].max = Number(value);
       break;
-    case "starting":
-      stats.value[index].starting = Number(value);
+    case "current":
+      stats.value[index].current = Number(value);
   }
 
   store.patchStat(stats.value[index].name, stats.value[index]);
@@ -227,8 +227,8 @@ const EditRegen = {
                 type="number"
                 class="w-full"
                 :id="'statStart' + index"
-                :value="item.starting"
-                @input="(e: Event) => EditStat(e, index, 'starting')"
+                :value="item.current"
+                @input="(e: Event) => EditStat(e, index, 'current')"
               />
             </div>
             <div>

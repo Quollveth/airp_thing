@@ -24,6 +24,10 @@ const showWorldInfo = () => {
     showConfirmButton: true,
     confirmButtonText: "Load",
     reverseButtons: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      navigateTo("/game");
+    }
   });
 };
 

@@ -18,7 +18,7 @@ export type Stat = {
   description: string;
   min: number;
   max: number;
-  starting: number;
+  current: number;
   thresholds: {
     value: number;
     description: string;

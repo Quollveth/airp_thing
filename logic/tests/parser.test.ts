@@ -33,7 +33,7 @@ const dataStore: World = {
       description: "how alive are you",
       min: 0,
       max: 100,
-      starting: 60,
+      current: 60,
       thresholds: [
         {
           value: 0,

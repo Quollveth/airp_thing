@@ -113,3 +113,29 @@ export const useSettingsStore = defineStore("settingsStore", {
     },
   },
 });
+
+export type Message = { role: string; content: string };
+export const useGameStore = defineStore("gameStore", {
+  state: () => ({
+    history: [] as Message[],
+    historySize: 20,
+  }),
+
+  actions: {
+    clearHistory() {
+      this.history = [];
+    },
+    setHistorySize(size: number) {
+      this.historySize = size;
+    },
+    addToHistory(entry: Message) {
+      if (this.history.length > this.historySize) {
+        this.history.shift();
+      }
+      this.history.push(entry);
+    },
+    removeLastN(n: number) {
+      this.history.splice(n);
+    },
+  },
+});
