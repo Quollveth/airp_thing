@@ -60,22 +60,12 @@ const copySettings = (ntl: boolean) => {
   }
   rpModel.value = { ...logicModel.value };
 };
-
-const resetSettings = (e: Event) => {
-  store.reset("logic");
-  store.reset("rp");
-
-  sameModel.value = store.sameModel;
-  logicModel.value = { ...store.logicModel.Endpoint };
-  rpModel.value = { ...store.rpModel.Endpoint };
-};
 </script>
 
 <template>
   <div class="text-white flex flex-col items-center">
     <div class="flex gap-2">
       <h1 class="text-3xl font-bold mb-6">Endpoint Settings</h1>
-      <StyledButton class="h-min" @click="resetSettings">Reset</StyledButton>
     </div>
     <div class="flex flex-col gap-2 w-full">
       <div class="flex">
