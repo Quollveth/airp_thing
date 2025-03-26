@@ -30,12 +30,12 @@ defineProps<Props>();
           stroke-linejoin="round"
         />
       </svg>
-      <p>{{ label }}</p>
+      <p v-if="!expanded">{{ label }}</p>
     </button>
   </div>
   <div
     v-if="expanded"
-    class="fixed top-0 h-full w-1/3 shadow-xl border-zinc-700 bg-zinc-800 z-10 transition-transform duration-300 flex-col"
+    class="fixed top-0 h-full w-full md:w-1/3 shadow-xl border-zinc-700 bg-zinc-800 z-10 transition-transform duration-300 flex flex-col overflow-y-auto"
     :class="right ? 'right-0 border-l-2' : 'left-0 border-r-2'"
   >
     <div class="h-15" />

@@ -1,16 +1,19 @@
+<!-- https://codepen.io/manz/pen/GRxJgZZ -->
+
 <script setup lang="ts">
 interface Props {
   value: number;
 }
 const props = defineProps<Props>();
-const progress = useTemplateRef("progress");
+
+const progress = useTemplateRef("bar");
 onMounted(() => {
-  progress.value!.style.setProperty("--progress", `${props.value}`);
+  progress.value!.style.setProperty("--progress", `${props.value}%`);
 });
 </script>
 
 <template>
-  <div class="progress" ref="progress">
+  <div class="progress" ref="bar">
     <div class="bar">
       <div class="progress-value"></div>
     </div>
@@ -29,7 +32,7 @@ body {
   height: 20px;
   border: 1px solid #fff;
   padding: 6px 5px;
-  /* box-shadow: 0 0 10px #aaa;*/
+  /*box-shadow: 0 0 10px #aaa;*/
 }
 
 .progress .bar {
@@ -37,10 +40,12 @@ body {
   height: 100%;
   background: linear-gradient(gold, #c85, gold);
   background-repeat: repeat;
-  /*box-shadow: 0 0 10px 0px orange;*/
+  /* box-shadow: 0 0 10px 0px orange;*/
+  /*
   animation:
     shine 4s ease-in infinite,
     end 1s ease-out 1;
+*/
   transition: width 3s ease;
 }
 
@@ -49,7 +54,6 @@ body {
   initial-value: 0%;
   inherits: true;
 }
-
 /*
 @keyframes shine {
   0% {
