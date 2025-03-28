@@ -42,16 +42,16 @@ const updatePrompt = (e: Event, which: "logic" | "rp", index: number) => {
       <StyledTextArea
         rows="5"
         v-for="i in 5"
-        :value="rpModelPrompts[i - 1]"
-        @change="(e) => updatePrompt(e, 'rp', i - 1)"
+        :v-model="rpModelPrompts[i - 1]"
+        @input="(e: Event) => updatePrompt(e, 'rp', i - 1)"
       />
     </Collapsable>
     <Collapsable label="Logic Model Prompts">
       <StyledTextArea
         rows="5"
         v-for="i in 5"
-        :value="logicModelPrompts[i - 1]"
-        @change="(e) => updatePrompt(e, 'logic', i - 1)"
+        v-model="logicModelPrompts[i - 1]"
+        @input="(e: Event) => updatePrompt(e, 'logic', i - 1)"
       />
     </Collapsable>
   </div>

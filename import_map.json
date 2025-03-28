@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@/stores/": "./stores/",
+    "@/logic/": "./logic/"
+  }
+}

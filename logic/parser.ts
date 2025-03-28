@@ -2,8 +2,7 @@
  * All the references will be as $[REFERENCE]
  */
 
-//import type { World, Stat, Entity } from "@/stores/types";
-import type { World, Stat, Entity } from "../stores/types.ts";
+import type { World, Stat, Entity } from "@/stores/types";
 
 export function formatStatSimple(stat: Stat): string {
   const lastThresh =
@@ -11,7 +10,7 @@ export function formatStatSimple(stat: Stat): string {
       .filter((t) => t.value <= stat.current)
       .sort((a, b) => b.value - a.value)[0] || null;
 
-  return `${stat.name}: ${stat.current}/${stat.max} - ${lastThresh}`;
+  return `${stat.name}: ${stat.current}/${stat.max} - ${lastThresh.description}`;
 }
 
 export function formatStatFull(stat: Stat): string {
@@ -20,7 +19,7 @@ export function formatStatFull(stat: Stat): string {
       .filter((t) => t.value <= stat.current)
       .sort((a, b) => b.value - a.value)[0] || null;
 
-  return `${stat.name}: ${stat.description} - min:${stat.min}, max:${stat.max}, current:${stat.current} - ${lastThresh}`;
+  return `${stat.name}: ${stat.description} - min:${stat.min}, max:${stat.max}, current:${stat.current} - ${lastThresh.description}`;
 }
 
 export function formatEntity(entity: Entity): string {

@@ -8,7 +8,7 @@ import {
   formatStatFull,
 } from "../parser.ts";
 
-const dataStore: World = {
+export const dataStore: World = {
   title: "Test World",
   description: "Only for testing",
   CW: ["tests", "testing", "deno"],
@@ -53,8 +53,9 @@ const dataStore: World = {
   ],
 } as const;
 
-const action = "walk down the street";
-const state = "the player is walking down the street";
+export const action = "walk down the street";
+export const state =
+  "the player is walking down the street and gets hit by a truck";
 
 type testUnit = {
   text: string;
