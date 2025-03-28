@@ -12,9 +12,11 @@ const APPNAME = "AIRP Thingmabob";
       <StyledButton @click="() => navigateTo('/newgame')"
         >New Game</StyledButton
       >
+      <!--
       <StyledButton @click="() => navigateTo('/loadgame')"
         >Load Game</StyledButton
       >
+	  -->
       <StyledButton @click="() => navigateTo('/editworld')"
         >Edit World</StyledButton
       >

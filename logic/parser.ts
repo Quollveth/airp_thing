@@ -26,6 +26,17 @@ export function formatEntity(entity: Entity): string {
   return `${entity.name}: ${entity.description} - ${entity.tags.join(",")}`;
 }
 
+const jsonFormat = `JSON FORMAT:
+"stats":{
+	"STAT NAME":VALUE,
+	"STAT NAME":VALUE
+},
+entities:[
+	"NAME",
+	"NAME",
+	"NAME"
+]`;
+
 export function ReplaceReferences(
   toReplace: string,
   dataStore: World,
@@ -42,6 +53,7 @@ export function ReplaceReferences(
     "$[ENTITIES]": () => dataStore.entities.map(formatEntity).join("\n"),
     "$[STATSSIMPLE]": () => dataStore.stats.map(formatStatSimple).join("\n"),
     "$[STATSFULL]": () => dataStore.stats.map(formatStatFull).join("\n"),
+    "$[JSONFORMAT]": () => jsonFormat,
   };
 
   return toReplace.replace(

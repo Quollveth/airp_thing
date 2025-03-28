@@ -36,13 +36,13 @@ const updatePrompt = (e: Event, which: "logic" | "rp", index: number) => {
       in the format $[REFERENCE] <br /><br />Available references are:<br />
       $[WORLD] $[CONTENT] $[PLAYER] <br />
       $[LOCATION] $[ACTION] $[STATE] $[ENTITIES] <br />
-      $[STATSSIMPLE] $[STATSFULL]<br />
+      $[STATSSIMPLE] $[STATSFULL] $[JSONFORMAT] <br />
     </p>
     <Collapsable label="Narration Model Prompts">
       <StyledTextArea
         rows="5"
         v-for="i in 5"
-        :v-model="rpModelPrompts[i - 1]"
+        v-model="rpModelPrompts[i - 1]"
         @input="(e: Event) => updatePrompt(e, 'rp', i - 1)"
       />
     </Collapsable>

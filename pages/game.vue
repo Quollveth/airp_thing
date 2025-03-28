@@ -2,7 +2,8 @@
 import type { World, Agent } from "@/stores/types";
 import type { GameData } from "@/logic/model";
 
-import { PromptNextState } from "@/logic/model";
+import { PromptNextState, StartGame } from "@/logic/model";
+import Swal from "sweetalert2";
 
 import {
   DEFAULT_HIST_SIZE,
@@ -20,10 +21,7 @@ import StatRender from "@/game_components/statRender.vue";
 
 definePageMeta({
   middleware: (to, from) => {
-    //TODO: REMOVE DEBUG
-    return;
-
-    if (from.path == "/newgame" || from.path == "/settings") {
+    if (from.path == "/newgame") {
       return;
     }
     return navigateTo("/newgame");
@@ -57,13 +55,45 @@ const expandDebug = ref(false);
 //
 
 // Initialize
-onMounted(() => {
+onMounted(async () => {
+  if (worldStore.worldEmpty) {
+    alert("No world loaded");
+    return navigateTo("/newgame");
+  }
+
+  if (
+    !settingsStore.rpUpdated &&
+    (settingsStore.sameModel || !settingsStore.logicUpdated)
+  ) {
+    alert("settings are default, default settings do not have an api key");
+    return navigateTo("/newgame");
+  }
+
   worldOpts.value = worldStore.worldOpts;
   rpAgent.value = settingsStore.rpModel;
-  logicAgent.value = settingsStore.logicModel;
 
-  gameState.value.visibleEntities = worldStore.worldOpts.entities;
+  if (settingsStore.sameModel) {
+    logicAgent.value = rpAgent.value;
+  } else {
+    logicAgent.value = settingsStore.logicModel;
+  }
+
+  gameState.value.visibleEntities = [];
   gameState.value.stats = worldStore.worldOpts.stats;
+
+  inputLocked.value = true;
+  const newState = await StartGame(
+    gameState.value,
+    worldOpts.value!,
+    rpAgent.value!,
+    logicAgent.value!,
+    (text: string) => {
+      gameState.value.situation += text;
+    },
+  );
+  gameState.value = newState;
+  gameState.value.action = "";
+  inputLocked.value = false;
 });
 
 type debugAction = "revert" | "step" | "history_size";
@@ -81,9 +111,16 @@ const doDebugAction = (e: Event, which: debugAction) => {
   }
 };
 
+const inputLocked = ref(false);
 const nextState = async () => {
+  inputLocked.value = true;
+
+  const statePreWipe = gameState.value;
+  gameState.value.situation = "";
+  gameState.value.action = "";
+
   const newState = await PromptNextState(
-    gameState.value,
+    statePreWipe,
     worldOpts.value!,
     rpAgent.value!,
     logicAgent.value!,
@@ -93,7 +130,7 @@ const nextState = async () => {
   );
   gameState.value = newState;
 
-  gameState.value.situation += "\n";
+  inputLocked.value = false;
 };
 </script>
 
@@ -168,9 +205,17 @@ const nextState = async () => {
       </Drawer>
     </div>
 
-    <StyledTextArea v-model="gameState.situation" class="flex-1" />
+    <StyledTextArea
+      :readonly="inputLocked"
+      v-model="gameState.situation"
+      class="flex-1"
+    />
     <div class="flex gap-2 w-full">
-      <StyledTextArea v-model="gameState.action" class="h-min" />
+      <StyledTextArea
+        :readonly="inputLocked"
+        v-model="gameState.action"
+        class="h-min"
+      />
       <StyledButton @click="nextState">Send</StyledButton>
     </div>
   </div>

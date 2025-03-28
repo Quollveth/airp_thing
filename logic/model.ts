@@ -3,6 +3,7 @@ import { ReplaceReferences } from "@/logic/parser";
 
 import type { LogicResponse } from "@/logic/network";
 import { Chat, AskLogic } from "@/logic/network";
+import Swal from "sweetalert2";
 
 export const DEFAULT_HIST_SIZE = 20;
 
@@ -33,6 +34,23 @@ const History = new (class {
 
 export function ChangeHistorySize(size: number) {
   History.setHistorySize(size);
+}
+export async function StartGame(
+  gameState: GameData,
+  worldData: World,
+  narrationModel: Agent,
+  logicModel: Agent,
+  textCallback: (output: string) => void,
+): Promise<GameData> {
+  History.clearHistory();
+  const withStartingAction = { ...gameState, action: "START GAME" };
+  return PromptNextState(
+    withStartingAction,
+    worldData,
+    narrationModel,
+    logicModel,
+    textCallback,
+  );
 }
 export function StepBack() {}
 export function StepForward() {}
@@ -87,21 +105,35 @@ export async function PromptNextState(
     content: newSituation,
   });
 
-  const newData: LogicResponse = await AskLogic(modelLogic);
+  try {
+    const newData: LogicResponse = await AskLogic(modelLogic);
 
-  Object.entries(newData.stats).forEach(([statName, change]) => {
-    const stat = newState.stats.find((s) => s.name === statName);
-    if (stat) {
-      stat.current = Math.min(
-        Math.max(stat.current + change, stat.min),
-        stat.max,
-      );
-    }
-  });
+    Object.entries(newData.stats).forEach(([statName, change]) => {
+      const stat = newState.stats.find((s) => s.name === statName);
+      if (stat) {
+        stat.current = Math.min(
+          Math.max(stat.current + change, stat.min),
+          stat.max,
+        );
+      }
+    });
 
-  newState.visibleEntities = newData.entities
-    .map((entityName) => worldData.entities.find((e) => e.name === entityName))
-    .filter((e): e is Entity => e !== undefined);
+    newState.visibleEntities = newData.entities
+      .map((entityName) =>
+        worldData.entities.find((e) => e.name === entityName),
+      )
+      .filter((e): e is Entity => e !== undefined);
 
-  return newState;
+    return newState;
+  } catch {
+    Swal.fire({
+      title: "The model failed to produce correct JSON",
+      theme: "dark",
+      icon: "error",
+      toast: true,
+      position: "top-end",
+      timer: 1000,
+    });
+    return newState;
+  }
 }

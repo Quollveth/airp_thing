@@ -63,9 +63,6 @@ export async function Chat(
     return { role: "system", content: p };
   }).concat(history);
 
-  console.log("Messages sent");
-  console.log(messages);
-
   const response = await fetch(agent.Endpoint.endpoint, {
     method: "POST",
     headers: {
@@ -109,7 +106,16 @@ export async function AskLogic(agent: Agent): Promise<LogicResponse> {
   const parsed = JSON.parse(text);
 
   const aiJason = parsed.choices[0].message.content;
-  const gameState = JSON.parse(aiJason);
 
-  return gameState;
+  try {
+    const substring = "```";
+    const jasonNoBackticks = aiJason.replace(new RegExp(substring, "g"), "");
+
+    const gameState = JSON.parse(jasonNoBackticks);
+    return gameState;
+  } catch (e) {
+    console.log("Bad JSON exception");
+    console.log(aiJason);
+    throw new DOMException("bad jason");
+  }
 }
